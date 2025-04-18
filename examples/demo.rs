@@ -1,7 +1,7 @@
 use {
     egui_demo_lib::{easy_mark, DemoWindows},
-    egui_sfml::SfEgui,
-    sfml::{
+    egui_sf2g::SfEgui,
+    sf2g::{
         graphics::{Color, Rect, RenderTarget, RenderWindow, View},
         window::{Event, Style, VideoMode},
     },

@@ -6,16 +6,16 @@
 
 mod rendering;
 
-pub use {egui, sfml};
+pub use {egui, sf2g};
 use {
     egui::{
         Context, CursorIcon, Modifiers, PointerButton, Pos2, RawInput, TextureId, ViewportCommand,
     },
-    sfml::{
+    sf2g::{
         cpp::FBox,
         graphics::{RenderTarget as _, RenderWindow, Texture},
         system::{Clock, Vector2, Vector2i},
-        window::{clipboard, mouse, Cursor, CursorType, Event, Key},
+        window::{mouse, Cursor, CursorType, Event, Key},
     },
     std::collections::HashMap,
 };
@@ -117,7 +117,11 @@ fn modifier(alt: bool, ctrl: bool, shift: bool) -> egui::Modifiers {
 }
 
 /// Converts an SFML event to an egui event and adds it to the `RawInput`.
-fn handle_event(raw_input: &mut egui::RawInput, event: &sfml::window::Event) {
+fn handle_event(
+    raw_input: &mut egui::RawInput,
+    event: &sf2g::window::Event,
+    clipboard: &mut arboard::Clipboard,
+) {
     match *event {
         Event::KeyPressed {
             code,
@@ -131,7 +135,7 @@ fn handle_event(raw_input: &mut egui::RawInput, event: &sfml::window::Event) {
                 match code {
                     Key::V => raw_input
                         .events
-                        .push(egui::Event::Text(clipboard::get_string())),
+                        .push(egui::Event::Text(clipboard.get_text().unwrap())),
                     Key::C => raw_input.events.push(egui::Event::Copy),
                     Key::X => raw_input.events.push(egui::Event::Cut),
                     _ => {}
@@ -198,7 +202,7 @@ fn handle_event(raw_input: &mut egui::RawInput, event: &sfml::window::Event) {
             }
         }
         Event::MouseWheelScrolled { delta, .. } => {
-            if sfml::window::Key::LControl.is_pressed() {
+            if sf2g::window::Key::LControl.is_pressed() {
                 raw_input
                     .events
                     .push(egui::Event::Zoom(if delta > 0.0 { 1.1 } else { 0.9 }));
@@ -268,6 +272,7 @@ pub struct SfEgui {
     textures: TextureMap,
     last_window_pos: Vector2i,
     cursors: Cursors,
+    clipboard: arboard::Clipboard,
 }
 
 struct Cursors {
@@ -304,19 +309,20 @@ impl SfEgui {
     /// The size of the egui ui will be the same as `window`'s size.
     pub fn new(window: &RenderWindow) -> Self {
         Self {
-            clock: sfml::system::Clock::start().unwrap(),
+            clock: sf2g::system::Clock::start().unwrap(),
             raw_input: make_raw_input(window),
             ctx: Context::default(),
             textures: TextureMap::default(),
             last_window_pos: Vector2i::default(),
             cursors: Cursors::default(),
+            clipboard: arboard::Clipboard::new().unwrap(),
         }
     }
     /// Convert an SFML event into an egui event and add it for later use by egui.
     ///
     /// Call this in an event polling loop for each event.
     pub fn add_event(&mut self, event: &Event) {
-        handle_event(&mut self.raw_input, event);
+        handle_event(&mut self.raw_input, event, &mut self.clipboard);
     }
     /// Does a [`egui::Context::run`] to run your egui ui.
     ///
@@ -413,7 +419,7 @@ impl SfEgui {
         for cmd in platform_output.commands {
             match cmd {
                 egui::OutputCommand::CopyText(txt) => {
-                    clipboard::set_string(&txt);
+                    self.clipboard.set_text(txt).unwrap();
                 }
                 egui::OutputCommand::CopyImage(_img) => {
                     eprintln!("egui-sfml: Unimplemented image copy");

@@ -1,7 +1,7 @@
 use {
     egui::ViewportCommand,
-    egui_sfml::SfEgui,
-    sfml::{
+    egui_sf2g::SfEgui,
+    sf2g::{
         graphics::{Color, Rect, RenderTarget, RenderWindow, View},
         window::{ContextSettings, Event, Style},
     },

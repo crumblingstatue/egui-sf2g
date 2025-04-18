@@ -1,7 +1,7 @@
 use {
     crate::{TextureCreateError, TextureMap, UserTexSource},
     egui::{epaint::Primitive, ImageData, TextureId},
-    sfml::graphics::{
+    sf2g::graphics::{
         blend_mode::Factor, BlendMode, Color, PrimitiveType, RenderStates, RenderTarget as _,
         RenderWindow, Texture, Vertex,
     },

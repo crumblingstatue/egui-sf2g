@@ -1,6 +1,6 @@
 use {
-    egui_sfml::SfEgui,
-    sfml::{
+    egui_sf2g::SfEgui,
+    sf2g::{
         graphics::{Color, RenderTarget, RenderWindow},
         window::{ContextSettings, Event, Style},
     },
