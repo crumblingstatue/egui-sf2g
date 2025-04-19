@@ -3,10 +3,10 @@ name = "egui-sf2g"
 version = "0.1.0"
 authors = ["crumblingstatue <radiantstatue@gmail.com>"]
 edition = "2024"
-description = "egui integration for rust-sfml"
+description = "egui integration for sf2g"
 license = "MIT OR Apache-2.0"
-documentation = "https://docs.rs/egui-sfml"
-repository = "https://github.com/crumblingstatue/egui-sfml"
+documentation = "https://docs.rs/egui-sf2g"
+repository = "https://github.com/crumblingstatue/egui-sf2g"
 
 [dependencies]
 arboard = "3.5.0"

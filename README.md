@@ -1,12 +1,12 @@
-# egui-sfml
+# egui-sf2g
 
-[![Crates.io](https://img.shields.io/crates/v/egui-sfml)](https://crates.io/crates/egui-sfml)
-[![docs.rs](https://img.shields.io/docsrs/egui-sfml?style=plastic)](https://docs.rs/egui-sfml)
+[![Crates.io](https://img.shields.io/crates/v/egui-sf2g)](https://crates.io/crates/egui-sf2g)
+[![docs.rs](https://img.shields.io/docsrs/egui-sf2g?style=plastic)](https://docs.rs/egui-sf2g)
 
-[SFML](https://github.com/jeremyletang/rust-sfml) integration for [egui](https://github.com/emilk/egui).
+[sf2g](https://github.com/crumblingstatue/sf2g) integration for [egui](https://github.com/emilk/egui).
 
-This library allows using egui for rust-sfml projects.
-It's a very easy way to add a functional gui to your rust-sfml game or application!
+This library allows using egui for sf2g projects.
+It's a very easy way to add a functional gui to your sf2g game or application!
 
 All you need to do is:
 - Create an `SfEgui`

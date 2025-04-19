@@ -422,10 +422,10 @@ impl SfEgui {
                     self.clipboard.set_text(txt).unwrap();
                 }
                 egui::OutputCommand::CopyImage(_img) => {
-                    eprintln!("egui-sfml: Unimplemented image copy");
+                    eprintln!("egui-sf2g: Unimplemented image copy");
                 }
                 egui::OutputCommand::OpenUrl(_url) => {
-                    eprintln!("egui-sfml: Unimplemented url open");
+                    eprintln!("egui-sf2g: Unimplemented url open");
                 }
             }
         }
@@ -452,7 +452,7 @@ impl SfEgui {
                         rw.set_visible(true);
                         rw.set_position(rw_pos);
                     }
-                    _ => eprintln!("egui_sfml: Unhandled ViewportCommand: {cmd:?}"),
+                    _ => eprintln!("egui_sf2g: Unhandled ViewportCommand: {cmd:?}"),
                 }
             }
         }
