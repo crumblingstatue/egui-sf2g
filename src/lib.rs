@@ -15,7 +15,7 @@ use {
         cpp::FBox,
         graphics::{RenderTarget as _, RenderWindow, Texture},
         system::{Clock, Vector2, Vector2i},
-        window::{mouse, Cursor, CursorType, Event, Key},
+        window::{Cursor, CursorType, Event, Key, mouse},
     },
     std::collections::HashMap,
 };

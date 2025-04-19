@@ -1,9 +1,9 @@
 use {
     crate::{TextureCreateError, TextureMap, UserTexSource},
-    egui::{epaint::Primitive, ImageData, TextureId},
+    egui::{ImageData, TextureId, epaint::Primitive},
     sf2g::graphics::{
-        blend_mode::Factor, BlendMode, Color, PrimitiveType, RenderStates, RenderTarget as _,
-        RenderWindow, Texture, Vertex,
+        BlendMode, Color, PrimitiveType, RenderStates, RenderTarget as _, RenderWindow, Texture,
+        Vertex, blend_mode::Factor,
     },
 };
 

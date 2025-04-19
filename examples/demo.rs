@@ -1,5 +1,5 @@
 use {
-    egui_demo_lib::{easy_mark, DemoWindows},
+    egui_demo_lib::{DemoWindows, easy_mark},
     egui_sf2g::SfEgui,
     sf2g::{
         graphics::{Color, Rect, RenderTarget, RenderWindow, View},
