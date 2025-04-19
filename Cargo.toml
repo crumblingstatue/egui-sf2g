@@ -14,7 +14,7 @@ egui = "0.31"
 glu-sys = "0.1.4"
 
 [dependencies.sf2g]
-git = "https://github.com/crumblingstatue/sf2g.git"
+version = "0.1.0"
 default-features = false
 features = ["graphics"]
 
