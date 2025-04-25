@@ -1,6 +1,6 @@
 [package]
 name = "egui-sf2g"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["crumblingstatue <radiantstatue@gmail.com>"]
 edition = "2024"
 description = "egui integration for sf2g"
@@ -12,11 +12,7 @@ repository = "https://github.com/crumblingstatue/egui-sf2g"
 arboard = "3.5.0"
 egui = "0.31"
 glu-sys = "0.1.4"
-
-[dependencies.sf2g]
-version = "0.1.0"
-default-features = false
-features = ["graphics"]
+sf2g = "0.2.0"
 
 [dev-dependencies]
 egui_demo_lib = "0.31"
