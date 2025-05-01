@@ -206,6 +206,12 @@ fn handle_event(
                 raw_input
                     .events
                     .push(egui::Event::Zoom(if delta > 0.0 { 1.1 } else { 0.9 }));
+            } else {
+                raw_input.events.push(egui::Event::MouseWheel {
+                    unit: egui::MouseWheelUnit::Line,
+                    delta: egui::vec2(0.0, delta),
+                    modifiers: egui::Modifiers::default(),
+                });
             }
         }
         Event::Resized { width, height } => {
