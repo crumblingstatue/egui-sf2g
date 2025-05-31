@@ -62,20 +62,20 @@ fn ui(ctx: &egui::Context, state: &mut UiState) {
             ctx.send_viewport_cmd(ViewportCommand::Visible(false));
             state.invisible_set_instant = Some(Instant::now());
         }
-        if let Some(instant) = state.invisible_set_instant {
-            if instant.elapsed().as_secs() >= 2 {
-                ctx.send_viewport_cmd(ViewportCommand::Visible(true));
-                state.invisible_set_instant = None;
-            }
+        if let Some(instant) = state.invisible_set_instant
+            && instant.elapsed().as_secs() >= 2
+        {
+            ctx.send_viewport_cmd(ViewportCommand::Visible(true));
+            state.invisible_set_instant = None;
         }
         if ui.button("Focus in 2 seconds").clicked() {
             state.focus_req_instant = Some(Instant::now());
         }
-        if let Some(instant) = state.focus_req_instant {
-            if instant.elapsed().as_secs() >= 2 {
-                ctx.send_viewport_cmd(ViewportCommand::Focus);
-                state.focus_req_instant = None;
-            }
+        if let Some(instant) = state.focus_req_instant
+            && instant.elapsed().as_secs() >= 2
+        {
+            ctx.send_viewport_cmd(ViewportCommand::Focus);
+            state.focus_req_instant = None;
         }
     });
 }
