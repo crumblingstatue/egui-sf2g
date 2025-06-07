@@ -428,7 +428,9 @@ impl SfEgui {
         for cmd in platform_output.commands {
             match cmd {
                 egui::OutputCommand::CopyText(txt) => {
-                    self.clipboard.set_text(txt).unwrap();
+                    if let Err(e) = self.clipboard.set_text(txt) {
+                        eprintln!("[egui-sf2g] Failed to set clipboard text: {e}");
+                    }
                 }
                 egui::OutputCommand::CopyImage(_img) => {
                     eprintln!("egui-sf2g: Unimplemented image copy");
