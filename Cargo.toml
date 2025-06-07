@@ -1,6 +1,6 @@
 [package]
 name = "egui-sf2g"
-version = "0.4.1"
+version = "0.4.2"
 authors = ["crumblingstatue <radiantstatue@gmail.com>"]
 edition = "2024"
 description = "egui integration for sf2g"
