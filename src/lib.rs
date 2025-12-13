@@ -390,7 +390,7 @@ impl SfEgui {
         rw: &mut RenderWindow,
         platform_output: egui::PlatformOutput,
         textures_delta: egui::TexturesDelta,
-        viewport_output: egui::ViewportIdMap<egui::ViewportOutput>,
+        viewport_output: egui::OrderedViewportIdMap<egui::ViewportOutput>,
     ) -> Result<(), PassError> {
         for (id, delta) in &textures_delta.set {
             let tex = self

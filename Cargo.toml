@@ -9,10 +9,10 @@ documentation = "https://docs.rs/egui-sf2g"
 repository = "https://github.com/crumblingstatue/egui-sf2g"
 
 [dependencies]
-arboard = "3.5.0"
-egui = "0.32"
+arboard = "3.6.0"
+egui = "0.33"
 glu-sys = "0.1.4"
 sf2g = "0.4.0"
 
 [dev-dependencies]
-egui_demo_lib = "0.32"
+egui_demo_lib = "0.33"
