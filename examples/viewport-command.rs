@@ -41,7 +41,7 @@ fn main() {
             }
         }
         let di = sf_egui
-            .run(&mut rw, |_rw, ctx| ui(ctx, &mut ui_state))
+            .run(&mut rw, |_rw, ui| crate::ui(ui, &mut ui_state))
             .unwrap();
         rw.clear(Color::BLACK);
         sf_egui.draw(di, &mut rw, None);
@@ -49,23 +49,23 @@ fn main() {
     }
 }
 
-fn ui(ctx: &egui::Context, state: &mut UiState) {
-    egui::CentralPanel::default().show(ctx, |ui| {
+fn ui(ui: &mut egui::Ui, state: &mut UiState) {
+    egui::CentralPanel::default().show_inside(ui, |ui| {
         if ui.button("Close window (quit)").clicked() {
-            ctx.send_viewport_cmd(ViewportCommand::Close);
+            ui.send_viewport_cmd(ViewportCommand::Close);
         }
         ui.label("Window title");
         if ui.text_edit_singleline(&mut state.title).changed() {
-            ctx.send_viewport_cmd(ViewportCommand::Title(state.title.clone()));
+            ui.send_viewport_cmd(ViewportCommand::Title(state.title.clone()));
         }
         if ui.button("Hide for 2 seconds").clicked() {
-            ctx.send_viewport_cmd(ViewportCommand::Visible(false));
+            ui.send_viewport_cmd(ViewportCommand::Visible(false));
             state.invisible_set_instant = Some(Instant::now());
         }
         if let Some(instant) = state.invisible_set_instant
             && instant.elapsed().as_secs() >= 2
         {
-            ctx.send_viewport_cmd(ViewportCommand::Visible(true));
+            ui.send_viewport_cmd(ViewportCommand::Visible(true));
             state.invisible_set_instant = None;
         }
         if ui.button("Focus in 2 seconds").clicked() {
@@ -74,7 +74,7 @@ fn ui(ctx: &egui::Context, state: &mut UiState) {
         if let Some(instant) = state.focus_req_instant
             && instant.elapsed().as_secs() >= 2
         {
-            ctx.send_viewport_cmd(ViewportCommand::Focus);
+            ui.send_viewport_cmd(ViewportCommand::Focus);
             state.focus_req_instant = None;
         }
     });

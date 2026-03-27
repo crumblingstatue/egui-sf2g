@@ -197,12 +197,10 @@ fn handle_event(
                 });
             }
         }
-        Event::TextEntered { unicode } => {
-            if !unicode.is_control() {
-                raw_input
-                    .events
-                    .push(egui::Event::Text(unicode.to_string()));
-            }
+        Event::TextEntered { unicode } if !unicode.is_control() => {
+            raw_input
+                .events
+                .push(egui::Event::Text(unicode.to_string()));
         }
         Event::MouseWheelScrolled { delta, .. } => {
             if sf2g::window::Key::LControl.is_pressed() {
@@ -214,6 +212,7 @@ fn handle_event(
                     unit: egui::MouseWheelUnit::Line,
                     delta: egui::vec2(0.0, delta),
                     modifiers: egui::Modifiers::default(),
+                    phase: egui::TouchPhase::Move,
                 });
             }
         }
@@ -343,10 +342,10 @@ impl SfEgui {
     pub fn run(
         &mut self,
         rw: &mut RenderWindow,
-        mut f: impl FnMut(&mut RenderWindow, &Context),
+        mut f: impl FnMut(&mut RenderWindow, &mut egui::Ui),
     ) -> Result<DrawInput, PassError> {
         self.prepare_raw_input();
-        let out = self.ctx.run(self.raw_input.take(), |ctx| f(rw, ctx));
+        let out = self.ctx.run_ui(self.raw_input.take(), |ui| f(rw, ui));
         self.handle_output(
             rw,
             out.platform_output,
