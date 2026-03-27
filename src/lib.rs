@@ -134,7 +134,7 @@ fn handle_event(
             if ctrl {
                 match code {
                     Key::V => match clipboard.get_text() {
-                        Ok(text) => raw_input.events.push(egui::Event::Text(text)),
+                        Ok(text) => raw_input.events.push(egui::Event::Paste(text)),
                         Err(e) => {
                             eprintln!("[egui-sf2g] Paste failed: {e}");
                         }
