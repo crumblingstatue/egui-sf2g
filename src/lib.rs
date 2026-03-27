@@ -454,6 +454,17 @@ impl SfEgui {
                             rw.set_position(self.last_window_pos);
                         }
                     }
+                    ViewportCommand::RequestPaste => {
+                        if let Ok(text) = self.clipboard.get_text() {
+                            self.raw_input.events.push(egui::Event::Paste(text));
+                        }
+                    }
+                    ViewportCommand::RequestCut => {
+                        self.raw_input.events.push(egui::Event::Cut);
+                    }
+                    ViewportCommand::RequestCopy => {
+                        self.raw_input.events.push(egui::Event::Copy);
+                    }
                     ViewportCommand::Focus => {
                         // This trick forces focus where `request_focus` would
                         // only flash the tray icon.
