@@ -388,18 +388,20 @@ impl SfEgui {
         &mut self,
         rw: &mut RenderWindow,
         platform_output: egui::PlatformOutput,
-        textures_delta: egui::TexturesDelta,
+        mut textures_delta: egui::TexturesDelta,
         viewport_output: egui::OrderedViewportIdMap<egui::ViewportOutput>,
     ) -> Result<(), PassError> {
-        for (id, delta) in &textures_delta.set {
+        for (id, deltas) in textures_delta.set.drain() {
             let tex = self
                 .textures
-                .entry(*id)
+                .entry(id)
                 .or_insert_with(|| Texture::new().unwrap());
-            rendering::update_tex_from_delta(tex, delta)?;
+            for delta in deltas {
+                rendering::update_tex_from_delta(tex, &delta)?;
+            }
         }
-        for id in &textures_delta.free {
-            self.textures.remove(id);
+        for id in textures_delta.free.drain() {
+            self.textures.remove(&id);
         }
         let new_cursor = match platform_output.cursor_icon {
             CursorIcon::Default => Some(&self.cursors.arrow),
@@ -482,11 +484,6 @@ impl SfEgui {
 
     fn prepare_raw_input(&mut self) {
         self.raw_input.time = Some(self.clock.elapsed_time().as_seconds() as f64);
-        // Update modifiers every frame, otherwise querying them (input.modifiers.*) doesn't seem
-        // up-to-date
-        self.raw_input.modifiers.alt = Key::LAlt.is_pressed() || Key::RAlt.is_pressed();
-        self.raw_input.modifiers.ctrl = Key::LControl.is_pressed() || Key::RControl.is_pressed();
-        self.raw_input.modifiers.shift = Key::LShift.is_pressed() || Key::RShift.is_pressed();
     }
     /// Draw the ui to a `RenderWindow`.
     ///

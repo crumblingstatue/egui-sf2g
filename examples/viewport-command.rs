@@ -50,7 +50,7 @@ fn main() {
 }
 
 fn ui(ui: &mut egui::Ui, state: &mut UiState) {
-    egui::CentralPanel::default().show_inside(ui, |ui| {
+    egui::CentralPanel::default().show(ui, |ui| {
         if ui.button("Close window (quit)").clicked() {
             ui.send_viewport_cmd(ViewportCommand::Close);
         }
