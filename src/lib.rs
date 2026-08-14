@@ -484,6 +484,17 @@ impl SfEgui {
 
     fn prepare_raw_input(&mut self) {
         self.raw_input.time = Some(self.clock.elapsed_time().as_seconds() as f64);
+        // Egui 0.36 made modifiers into an event.
+        // This is the laziest and most inefficient way to do this, but whatever.
+        self.raw_input
+            .events
+            .push(egui::Event::ModifiersChanged(Modifiers {
+                alt: Key::LAlt.is_pressed() || Key::RAlt.is_pressed(),
+                ctrl: Key::LControl.is_pressed() || Key::RControl.is_pressed(),
+                shift: Key::LShift.is_pressed() || Key::RShift.is_pressed(),
+                mac_cmd: false,
+                command: false,
+            }));
     }
     /// Draw the ui to a `RenderWindow`.
     ///
