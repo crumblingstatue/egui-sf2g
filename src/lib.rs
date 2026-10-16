@@ -213,6 +213,7 @@ fn handle_event(
                     delta: egui::vec2(0.0, delta),
                     modifiers: egui::Modifiers::default(),
                     phase: egui::TouchPhase::Move,
+                    source: egui::MouseWheelSource::Wheel,
                 });
             }
         }
@@ -438,6 +439,9 @@ impl SfEgui {
                 }
                 egui::OutputCommand::OpenUrl(_url) => {
                     eprintln!("egui-sf2g: Unimplemented url open");
+                }
+                egui::OutputCommand::TextSelectionSettled(_) => {
+                    eprintln!("egui-sf2g: Text selection settled");
                 }
             }
         }

@@ -13,6 +13,9 @@ fn main() {
     rw.set_position((0, 0).into());
     rw.set_vertical_sync_enabled(true);
     let mut sfegui = SfEgui::new(&rw);
+    sfegui.context().add_font_provider(std::sync::Arc::new(
+        egui_system_font_provider::SystemFontProvider::new(),
+    ));
     let mut demo = DemoWindows::default();
     while rw.is_open() {
         while let Some(ev) = rw.poll_event() {
