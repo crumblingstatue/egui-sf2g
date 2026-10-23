@@ -121,6 +121,7 @@ fn handle_event(
     raw_input: &mut egui::RawInput,
     event: &sf2g::window::Event,
     clipboard: &mut arboard::Clipboard,
+    zoom_factor: f32,
 ) {
     match *event {
         Event::KeyPressed {
@@ -173,14 +174,15 @@ fn handle_event(
             }
         }
         Event::MouseMoved { x, y } => {
-            raw_input
-                .events
-                .push(egui::Event::PointerMoved(Pos2::new(x as f32, y as f32)));
+            raw_input.events.push(egui::Event::PointerMoved(Pos2::new(
+                x as f32 / zoom_factor,
+                y as f32 / zoom_factor,
+            )));
         }
         Event::MouseButtonPressed { x, y, button } => {
             if let Some(button) = button_conv(button) {
                 raw_input.events.push(egui::Event::PointerButton {
-                    pos: Pos2::new(x as f32, y as f32),
+                    pos: Pos2::new(x as f32 / zoom_factor, y as f32 / zoom_factor),
                     button,
                     pressed: true,
                     modifiers: Modifiers::default(),
@@ -190,7 +192,7 @@ fn handle_event(
         Event::MouseButtonReleased { x, y, button } => {
             if let Some(button) = button_conv(button) {
                 raw_input.events.push(egui::Event::PointerButton {
-                    pos: Pos2::new(x as f32, y as f32),
+                    pos: Pos2::new(x as f32 / zoom_factor, y as f32 / zoom_factor),
                     button,
                     pressed: false,
                     modifiers: Modifiers::default(),
@@ -218,26 +220,26 @@ fn handle_event(
             }
         }
         Event::Resized { width, height } => {
-            raw_input.screen_rect = Some(raw_input_screen_rect(width, height));
+            raw_input.screen_rect = Some(raw_input_screen_rect(width, height, zoom_factor));
         }
         _ => {}
     }
 }
 
 /// Creates a `RawInput` that fits the window.
-fn make_raw_input(window: &RenderWindow) -> RawInput {
+fn make_raw_input(window: &RenderWindow, zoom_factor: f32) -> RawInput {
     let Vector2 { x: w, y: h } = window.size();
     RawInput {
-        screen_rect: Some(raw_input_screen_rect(w, h)),
+        screen_rect: Some(raw_input_screen_rect(w, h, zoom_factor)),
         max_texture_side: Some(Texture::maximum_size() as usize),
         ..Default::default()
     }
 }
 
-fn raw_input_screen_rect(w: u32, h: u32) -> egui::Rect {
+fn raw_input_screen_rect(w: u32, h: u32, zoom_factor: f32) -> egui::Rect {
     egui::Rect {
         min: Pos2::new(0., 0.),
-        max: Pos2::new(w as f32, h as f32),
+        max: Pos2::new(w as f32 / zoom_factor, h as f32 / zoom_factor),
     }
 }
 
@@ -319,7 +321,7 @@ impl SfEgui {
     pub fn new(window: &RenderWindow) -> Self {
         Self {
             clock: sf2g::system::Clock::start().unwrap(),
-            raw_input: make_raw_input(window),
+            raw_input: make_raw_input(window, 1.0),
             ctx: Context::default(),
             textures: TextureMap::default(),
             last_window_pos: Vector2i::default(),
@@ -331,7 +333,12 @@ impl SfEgui {
     ///
     /// Call this in an event polling loop for each event.
     pub fn add_event(&mut self, event: &Event) {
-        handle_event(&mut self.raw_input, event, &mut self.clipboard);
+        handle_event(
+            &mut self.raw_input,
+            event,
+            &mut self.clipboard,
+            self.ctx.zoom_factor(),
+        );
     }
     /// Does a [`egui::Context::run`] to run your egui ui.
     ///

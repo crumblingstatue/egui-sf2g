@@ -65,13 +65,12 @@ pub(super) fn draw(
         for idx in mesh.indices {
             let v = mesh.vertices[idx as usize];
             let sf_v = Vertex::new(
-                (v.pos.x, v.pos.y).into(),
+                (v.pos.x * pixels_per_point, v.pos.y * pixels_per_point).into(),
                 Color::rgba(v.color.r(), v.color.g(), v.color.b(), v.color.a()),
                 (v.uv.x * tw, v.uv.y * th).into(),
             );
             vertices.push(sf_v);
         }
-        let pixels_per_point = 1.;
         let win_size = window.size();
         let width_in_pixels = win_size.x;
         let height_in_pixels = win_size.y;
