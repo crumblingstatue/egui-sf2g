@@ -12,7 +12,7 @@ fn main() {
     let mut rw = RenderWindow::new(vm, "Egui test", Style::NONE, &Default::default()).unwrap();
     rw.set_position((0, 0).into());
     rw.set_vertical_sync_enabled(true);
-    let mut sfegui = SfEgui::new(&rw);
+    let mut sfegui = SfEgui::default();
     sfegui.context().add_font_provider(std::sync::Arc::new(
         egui_system_font_provider::SystemFontProvider::new(),
     ));

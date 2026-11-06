@@ -24,7 +24,7 @@ fn main() {
     )
     .unwrap();
     rw.set_vertical_sync_enabled(true);
-    let mut sf_egui = SfEgui::new(&rw);
+    let mut sf_egui = SfEgui::default();
     let mut ui_state = UiState::default();
     let mut view = View::new().unwrap();
 

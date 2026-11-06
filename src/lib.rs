@@ -13,8 +13,8 @@ use {
     },
     sf2g::{
         cpp::FBox,
-        graphics::{RenderTarget as _, RenderWindow, Texture},
-        system::{Clock, Vector2, Vector2i},
+        graphics::{RenderWindow, Texture},
+        system::{Clock, Vector2i},
         window::{Cursor, CursorType, Event, Key, mouse},
     },
     std::collections::HashMap,
@@ -226,16 +226,6 @@ fn handle_event(
     }
 }
 
-/// Creates a `RawInput` that fits the window.
-fn make_raw_input(window: &RenderWindow, zoom_factor: f32) -> RawInput {
-    let Vector2 { x: w, y: h } = window.size();
-    RawInput {
-        screen_rect: Some(raw_input_screen_rect(w, h, zoom_factor)),
-        max_texture_side: Some(Texture::maximum_size() as usize),
-        ..Default::default()
-    }
-}
-
 fn raw_input_screen_rect(w: u32, h: u32, zoom_factor: f32) -> egui::Rect {
     egui::Rect {
         min: Pos2::new(0., 0.),
@@ -314,14 +304,14 @@ pub struct DrawInput {
     pixels_per_point: f32,
 }
 
-impl SfEgui {
-    /// Create a new `SfEgui`.
-    ///
-    /// The size of the egui ui will be the same as `window`'s size.
-    pub fn new(window: &RenderWindow) -> Self {
+impl Default for SfEgui {
+    fn default() -> Self {
         Self {
             clock: sf2g::system::Clock::start().unwrap(),
-            raw_input: make_raw_input(window, 1.0),
+            raw_input: RawInput {
+                max_texture_side: Some(Texture::maximum_size() as usize),
+                ..Default::default()
+            },
             ctx: Context::default(),
             textures: TextureMap::default(),
             last_window_pos: Vector2i::default(),
@@ -329,6 +319,9 @@ impl SfEgui {
             clipboard: arboard::Clipboard::new().unwrap(),
         }
     }
+}
+
+impl SfEgui {
     /// Convert an SFML event into an egui event and add it for later use by egui.
     ///
     /// Call this in an event polling loop for each event.

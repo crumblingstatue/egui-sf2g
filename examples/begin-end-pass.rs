@@ -28,7 +28,7 @@ fn main() {
     .unwrap();
     rw.set_vertical_sync_enabled(true);
     // Step 1: Create an SfEgui
-    let mut sfegui = SfEgui::new(&rw);
+    let mut sfegui = SfEgui::default();
 
     while rw.is_open() {
         while let Some(event) = rw.poll_event() {

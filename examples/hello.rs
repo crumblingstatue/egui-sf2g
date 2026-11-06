@@ -17,7 +17,7 @@ fn main() {
     .unwrap();
     rw.set_vertical_sync_enabled(true);
     // Step 1: Create an SfEgui
-    let mut sfegui = SfEgui::new(&rw);
+    let mut sfegui = SfEgui::default();
 
     let mut message = String::new();
     let mut messages = Vec::new();
